@@ -1,0 +1,1 @@
+!function(){!function(a,b){console.log(a+b),a+b}(10,20)}();

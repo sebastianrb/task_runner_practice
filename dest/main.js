@@ -1,0 +1,1 @@
+!function(){!function(n,o){console.log(n+o),n+o}(10,20)}();
