@@ -5,4 +5,12 @@ p {
     color: coral;
     text-decoration: underline;
     border: 3px dotted red;
+    transition: all .3s;
+    transform: scale(1.1);
+    height: 2rem;
+}
+
+h2 {
+    color: orange;
+    backface-visibility: hidden;
 }

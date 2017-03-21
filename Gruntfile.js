@@ -85,7 +85,63 @@ module.exports = function(grunt) {
       add: 'git add .', // Add all changed files in this directory to the commit
       commit: 'git commit -am "Releasing"', // Actually make the commit
       push: 'git push' // Send our changes to the repository
-    }
+    },
+    //grunt postCSS
+    postcss: {
+      options: {
+        map: true, // inline sourcemaps
+
+        // or
+        map: {
+            inline: false, // save all sourcemaps as separate files...
+            annotation: 'dist/css/maps/' // ...to the specified directory
+        },
+
+        processors: [
+          require('pixrem')(), // add fallbacks for rem units
+          require('autoprefixer')({browsers: 'last 4 versions'}), // add vendor prefixes
+          require('cssnano')() // minify the result
+        ]
+      },
+      dist: {
+        src: 'dest/*.css'
+      }
+    },
+    gitadd: {
+        task: {
+          options: {
+            force: true
+          },
+          files: {
+            src: ['./*']
+          }
+        }
+      },
+      gitcommit: {
+          task: {
+              options: {
+                  message: grunt.option('message'),
+                  noVerify: true,
+                  noStatus: false
+              }
+          }
+      },
+      gitpush: {
+        your_target: {
+          options: {
+            remote: "origin",
+            branch: "master"
+          }
+        }
+      },
+      gitpull: {
+          your_target: {
+            options: {
+              remote: "origin",
+              branch: "master"
+            }
+          }
+        },
   });
 
   var LOG_LEVEL = grunt.option('LOG_LEVEL');
@@ -109,4 +165,6 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('deploy', ['exec:add', 'exec:commit', 'exec:push']);
+
+  grunt.registerTask('css', ["sass", "cssmin", "postcss"]);
 };
